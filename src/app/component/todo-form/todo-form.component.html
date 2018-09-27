@@ -1,0 +1,6 @@
+<form (submit)="onSubmit()">
+  <div [formGroup]="todoForm" class="todo-input">
+    <input formControlName="todoInputValue" type="text">
+    <button type="submit" [disabled]="!todoForm.valid">{{cta}}</button>
+  </div>
+</form>
