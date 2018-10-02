@@ -10,14 +10,12 @@ export const ERROR = '[toDo] get value error';
 export class AddTodo implements Action {
   readonly type = ADD;
   constructor(public payload: string) {
-    this.payload = payload;
   }
 }
 
 export class ToggleTodo implements Action {
   readonly type = TOGGLE;
   constructor(public payload: number) {
-    this.payload = payload;
   }
 }
 

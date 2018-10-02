@@ -4,7 +4,7 @@ export interface TodoState {
   loading: boolean;
   items: any[];
 }
-const initialState = {loading: false, items: []};
+export const initialState = {loading: false, items: []};
 
 let counterId = 0;
 

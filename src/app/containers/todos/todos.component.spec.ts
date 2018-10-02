@@ -1,9 +1,16 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TodosComponent} from './todos.component';
-import {TodoFormComponent} from '../../component/todo-form/todo-form.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {TodoFormComponent} from '../../component/todo-form/todo-form.component';
 import {FiltersComponent} from '../filters/filters.component';
+import {StoreModule} from '@ngrx/store';
+import {toDoReducer} from '../../store/reducers';
+import {filterReducer} from '../../store/reducers/filter.reducer';
+import {HttpClientModule} from '@angular/common/http';
+import * as TodoReducer from '../../store/reducers/todo.reducer';
+import {AddTodo, DELETE, DeleteTodo, ToggleTodo} from '../../store/actions/todo.actions';
+import {dispatch} from 'rxjs/internal-compatibility';
 
 describe('TodosComponent', () => {
   let component: TodosComponent;
@@ -11,8 +18,17 @@ describe('TodosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TodosComponent, TodoFormComponent, FiltersComponent],
-      imports: [FormsModule, ReactiveFormsModule]
+      declarations: [
+        TodosComponent,
+        TodoFormComponent,
+        FiltersComponent
+      ],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        StoreModule.forRoot({todos: toDoReducer, filterType: filterReducer}),
+        HttpClientModule,
+      ],
     })
       .compileComponents();
   }));
@@ -27,35 +43,21 @@ describe('TodosComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  /*it('should delete todo', () => {
-    component.todos$ = [{id: 1}];
+  it('should delete todo', () => {
+    spyOn(component['store'], 'dispatch');
     component.deleteTodo(1);
-    const deletedTodo = component.todoList.find(todo => todo.id === 1);
-    expect(component.todoList.includes(deletedTodo)).toBe(false);
-    expect(component.todoList.length).toBe(0);
-  });*/
+    expect(component['store'].dispatch).toHaveBeenCalledWith(new DeleteTodo(1));
+  });
 
-  /*it('should toggle todo', () => {
-    component.todos$ = [{id: 1, done: false}];
+  it('should add todo', () => {
+    spyOn(component['store'], 'dispatch');
+    component.addTodo('pippo');
+    expect(component['store'].dispatch).toHaveBeenCalledWith(new AddTodo('pippo'));
+  });
+
+  it('should toggle todo', () => {
+    spyOn(component['store'], 'dispatch');
     component.toggleTodo(1);
-    const toggledTodo = component.todos$.find(todo => todo.id === 1);
-    expect(toggledTodo.done).toBe(true);
-  });*/
-
-  /*it('should get filters', () => {
-    expect(component.filters).toEqual(['all', 'todo', 'done']);
-  });*/
-
-  /*it('should set current filter', () => {
-    component.setCurrentFilter('pippo');
-    expect(component.currentFilter).toBe('pippo');
-  });*/
-
-  /*it('should filter list', () => {
-    component.todoList = [{id: 1, done: false}, {id: 1, done: false}];
-    component.setCurrentFilter('todo');
-    expect(component.filterList()).toEqual([{id: 1, done: false}, {id: 1, done: false}]);
-  });*/
+    expect(component['store'].dispatch).toHaveBeenCalledWith(new ToggleTodo(1));
+  });
 });
-
-

@@ -27,23 +27,23 @@ export class TodosComponent implements OnInit {
     this.store.dispatch(new GetTodos());
   }
 
-  addTodo(inputValue: string) {
+  public addTodo(inputValue: string) {
     this.store.dispatch(new AddTodo(inputValue));
   }
 
-  deleteTodo(id: number) {
+  public deleteTodo(id: number) {
     this.store.dispatch(new DeleteTodo(id));
   }
 
-  toggleTodo(id: number) {
+  public toggleTodo(id: number) {
     this.store.dispatch(new ToggleTodo(id));
   }
 
-  getFilters(filters) {
+  public getFilters(filters) {
     this.filters = filters;
   }
 
-  filterList(filter) {
+  public filterList(filter) {
     this.store.dispatch(new FilterToDo(filter));
   }
 }
